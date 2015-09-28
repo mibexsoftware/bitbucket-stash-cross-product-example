@@ -1,0 +1,63 @@
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+        <param name="plugin-icon">images/pluginIcon.png</param>
+        <param name="plugin-logo">images/pluginLogo.png</param>
+    </plugin-info>
+
+    <!-- add our i18n resource -->
+    <resource type="i18n" name="i18n" location="plugin"/>
+    
+    <!-- Pull request button for STASH -->
+    <stash-resource key="stash-close-open-tasks-resources" application="stash">
+        <resource type="download" name="close-open-tasks.js" location="/js/task-resolver.js"/>
+        <resource type="download" name="stash.js" location="/js/stash.js"/>
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        <dependency>com.atlassian.stash.stash-web-plugin:global</dependency>
+        <dependency>com.atlassian.auiplugin:aui-flag</dependency>
+        <context>stash.page.pullRequest.view</context>
+    </stash-resource>
+    <web-item key="stash-close-open-tasks-button" weight="90"
+              section="stash.pull-request.toolbar.actions" application="stash">
+        <condition class="ch.mibex.crossproduct.stash.HasOpenTasksCondition" />
+        <label key="open.tasks.resolve.label"/>
+        <tooltip key="open.tasks.resolve.tooltip"/>
+        <styleClass>resolve-open-tasks</styleClass>
+    </web-item>
+
+    <!-- Pull request button for BITBUCKET SERVER -->
+    <client-resource key="bitbucket-close-open-tasks-resources" application="bitbucket">
+        <resource type="download" name="close-open-tasks.js" location="/js/task-resolver.js"/>
+        <resource type="download" name="stash.js" location="/js/bitbucket.js"/>
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        <dependency>com.atlassian.bitbucket.server.bitbucket-web-api:amd</dependency>
+        <dependency>com.atlassian.bitbucket.server.bitbucket-web-api:aui</dependency>
+        <dependency>com.atlassian.bitbucket.server.bitbucket-web-api:jquery</dependency>
+        <dependency>com.atlassian.auiplugin:aui-flag</dependency>
+        <context>bitbucket.page.pullRequest.view</context>
+    </client-resource>
+    <web-item key="bitbucket-close-open-tasks-button" weight="90"
+              section="bitbucket.pull-request.toolbar.actions" application="bitbucket">
+        <condition class="ch.mibex.crossproduct.bitbucket.HasOpenTasksCondition" />
+        <label key="open.tasks.resolve.label"/>
+        <tooltip key="open.tasks.resolve.tooltip"/>
+        <styleClass>resolve-open-tasks</styleClass>
+    </web-item>
+
+    <!-- publish our implementations of the API interfaces for both products -->
+    <component key="bitbucket-open-tasks-counter" application="bitbucket"
+               class="ch.mibex.crossproduct.bitbucket.BitbucketOpenTasksCounter"
+               interface="ch.mibex.crossproduct.api.OpenTasksCounter"/>
+    <component key="stash-open-tasks-counter" application="stash"
+               class="ch.mibex.crossproduct.stash.StashOpenTasksCounter"
+               interface="ch.mibex.crossproduct.api.OpenTasksCounter"/>
+    
+    <!-- application-specific imports from the product container -->
+    <component-import key="stash-pull-request-service" application="stash"
+                      interface="com.atlassian.stash.pull.PullRequestService"/>
+    <component-import key="bitbucket-pull-request-service" application="bitbucket"
+                      interface="com.atlassian.bitbucket.pull.PullRequestService"/>
+
+</atlassian-plugin>

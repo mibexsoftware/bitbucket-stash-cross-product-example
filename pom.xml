@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>ch.mibex.cross-product-plugin</groupId>
+    <artifactId>parent</artifactId>
+    <name>Parent</name>
+    <description>A cross-product plug-in that works in both Stash and Bitbucket Server with a single JAR.</description>
+    <version>1.0.0</version>
+
+    <modules>
+        <module>api</module>
+        <module>stash</module>
+        <module>bitbucket</module>
+        <module>plugin</module>
+    </modules>
+
+    <organization>
+        <name>Mibex Software GmbH</name>
+        <url>https://www.mibexsoftware.com/</url>
+    </organization>
+    <packaging>pom</packaging>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.scala-lang</groupId>
+                <artifactId>scala-library</artifactId>
+                <version>${scala.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.atlassian.stash</groupId>
+                <artifactId>stash-parent</artifactId>
+                <version>${stash.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <properties>
+        <amps.version>6.1.0</amps.version>
+        <bitbucket.version>4.0.1</bitbucket.version>
+        <stash.version>3.11.2</stash.version>
+        <scala.version>2.11.7</scala.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>maven-atlassian-com</id>
+            <url>https://maven.atlassian.com/content/groups/public</url>
+            <releases>
+                <checksumPolicy>warn</checksumPolicy>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <checksumPolicy>warn</checksumPolicy>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>maven-atlassian-com</id>
+            <url>https://maven.atlassian.com/content/groups/public</url>
+            <releases>
+                <checksumPolicy>warn</checksumPolicy>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <checksumPolicy>warn</checksumPolicy>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- WIRED TEST RUNNER DEPENDENCIES -->
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>jsr311-api</artifactId>
+            <version>1.1.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.2-atlassian-1</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.atlassian.maven.plugins</groupId>
+                <artifactId>maven-amps-plugin</artifactId>
+                <version>${amps.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <products>
+                        <product>
+                            <id>bitbucket</id>
+                            <instanceId>bitbucket</instanceId>
+                            <version>${bitbucket.version}</version>
+                            <dataVersion>${bitbucket.version}</dataVersion>
+                        </product>
+                        <product>
+                            <id>stash</id>
+                            <instanceId>stash</instanceId>
+                            <version>${stash.version}</version>
+                            <dataVersion>${stash.version}</dataVersion>
+                        </product>
+                    </products>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
