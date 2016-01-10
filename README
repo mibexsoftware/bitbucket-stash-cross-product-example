@@ -1,6 +1,0 @@
-# Bitbucket Server / Stash Cross-Product Example Plug-in
-
-An example of a plug-in that supports both Stash and Bitbucket Server in one JAR file by using Maven modules for the
-plug-in, Stash / Bitbucket Server specific implementations and their common API.
-
-See here for details: https://www.mibexsoftware.com/blog/cross-product-bitbucket-server-and-stash-plugin/
